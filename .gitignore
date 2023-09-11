@@ -1,0 +1,12 @@
+**/a.out
+build
+build/**
+.vscode
+**/.env
+**/.obj
+*.spv
+NukuEngine/sandbox/**
+*.a
+textures_
+models/viking_room.obj
+imgui.ini
