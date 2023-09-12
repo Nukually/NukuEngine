@@ -1,16 +1,7 @@
 #pragma once
-//ÕâÀïÉè¼ÆEngineÀà
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include<glm/vec4.hpp>
-#include<glm/mat4x4.hpp>
-
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <string>
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Engineï¿½ï¿½
+#include"NkCommon.hpp"
+#include"NkWindow.hpp"
 namespace nk{
 class Engine{
 public:
@@ -19,8 +10,11 @@ public:
     static Engine &Instance();
 
     bool StartUp(int width, int height);
+    void OnRenderFrame();
 private:
-    //NkWindow nkWindow{ WIDTH,HEIGHT,"hello world" };
+    int m_width;
+    int m_height;
+    Window* m_Window;
     //NkDevice nkDevice{ nkWindow };
     //NkRenderer nkRenderer{ nkWindow, nkDevice };
 };

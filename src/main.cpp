@@ -1,4 +1,4 @@
-// ÔÚÕâ¸öÎÄ¼şÀïĞ´Ö÷Ğ§¹ûÊµÏÖÂß¼­
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½Ğ§ï¿½ï¿½Êµï¿½ï¿½ï¿½ß¼ï¿½
 #include "Nuku.h"
 
 // class HelloTriangleApplication {
@@ -41,7 +41,8 @@
 // };
 
 int main() {
-    NkEngineInit(800,600);
+    NkEngineInit(800, 600);
+    NkEngineRender();
     return 0;
     // try {
     //     app.run();

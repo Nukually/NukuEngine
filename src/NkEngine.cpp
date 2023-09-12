@@ -1,6 +1,4 @@
 #include"NkEngine.hpp"
-#include<mutex>
-
 namespace nk{
 std::mutex s_EngineInstanceMutex;
 Engine &Engine::Instance()
@@ -17,6 +15,14 @@ Engine &Engine::Instance()
 bool Engine::StartUp(int width,int height)
 {
     std::cout<<"hello world"<<std::endl;
+    m_Window = new Window(width,height,"hello world");
     return true;
+}
+void Engine::OnRenderFrame()
+{
+    while (!glfwWindowShouldClose(m_Window->getGLFWwindow()))
+    {
+        glfwPollEvents();
+    }
 }
 }
