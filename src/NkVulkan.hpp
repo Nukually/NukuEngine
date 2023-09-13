@@ -21,6 +21,9 @@ private:
 	void init_vulkan(); 
     void init_swapchain(); 
     void cleanup();
+
+    void createInstance();
+    
 };
 }
 #endif
