@@ -23,6 +23,9 @@ void NkEngineRender()
     std::lock_guard<std::mutex> lock(g_render_mutex);
     nk::Engine::Instance().OnRenderFrame();
 }
+/**
+ * @brief 引擎结束需要调用，回收资源
+ */
 void NkEngineClearUp()
 {
     nk::Engine::Instance().ClearUp();

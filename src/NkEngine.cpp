@@ -16,6 +16,7 @@ bool Engine::StartUp(int width,int height)
 {
     std::cout<<"hello world"<<std::endl;
     m_Window = new Window(width,height,"hello world");
+    m_Vulkan = new VulkanContext();
     return true;
 }
 void Engine::OnRenderFrame()
@@ -28,6 +29,7 @@ void Engine::OnRenderFrame()
 void Engine::ClearUp()
 {
     delete m_Window;
+    delete m_Vulkan;
     return;
 }
 }
