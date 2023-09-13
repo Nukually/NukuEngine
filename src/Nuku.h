@@ -23,4 +23,8 @@ void NkEngineRender()
     std::lock_guard<std::mutex> lock(g_render_mutex);
     nk::Engine::Instance().OnRenderFrame();
 }
+void NkEngineClearUp()
+{
+    nk::Engine::Instance().ClearUp();
+}
 #endif

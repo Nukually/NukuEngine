@@ -43,6 +43,7 @@
 int main() {
     NkEngineInit(800, 600);
     NkEngineRender();
+    NkEngineClearUp();
     return 0;
     // try {
     //     app.run();

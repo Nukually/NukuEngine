@@ -25,4 +25,9 @@ void Engine::OnRenderFrame()
         glfwPollEvents();
     }
 }
+void Engine::ClearUp()
+{
+    delete m_Window;
+    return;
+}
 }

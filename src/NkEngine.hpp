@@ -11,6 +11,7 @@ public:
 
     bool StartUp(int width, int height);
     void OnRenderFrame();
+    void ClearUp();
 private:
     int m_width;
     int m_height;
