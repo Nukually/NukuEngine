@@ -11,7 +11,6 @@ public:
     bool StartUp(int width, int height);
     void OnRenderFrame();
     void ClearUp();
-    void SetWindowForm(int width,int height);
     
 private:
     int m_width;

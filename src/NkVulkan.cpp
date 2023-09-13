@@ -1,9 +1,5 @@
 #include"NkVulkan.hpp"
 namespace nk{
-VulkanContext::VulkanContext()
-{
-    init();
-}
 void VulkanContext::init()
 {
     init_vulkan();
@@ -26,11 +22,6 @@ void VulkanContext::cleanup()
         DestroyDebugUtilsMessengerEXT(_instance, _debug_messenger, nullptr);
     }
     vkDestroyInstance(_instance, nullptr);
-}
-VulkanContext::~VulkanContext()
-{
-    //析构
-    cleanup();
 }
 void VulkanContext::createInstance()
 {
@@ -133,9 +124,5 @@ bool VulkanContext::checkValidationLayerSupport(){
         }
     }
     return true;
-}
-static VKAPI_ATTR VkBool32 VKAPI_CALL VulkanContext::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
-    std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-    return VK_FALSE;
 }
 }

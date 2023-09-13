@@ -33,9 +33,4 @@ void Engine::ClearUp()
     delete m_Window;
     return;
 }
-void Engine::SetWindowForm(int width,int height)
-{
-    m_Window->m_width = width;
-    m_Window->m_height = height;
-}
 }
