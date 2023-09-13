@@ -28,8 +28,14 @@ void Engine::OnRenderFrame()
 }
 void Engine::ClearUp()
 {
-    delete m_Window;
+    //todo:如何正确且自动地控制析构顺序？
     delete m_Vulkan;
+    delete m_Window;
     return;
+}
+void Engine::SetWindowForm(int width,int height)
+{
+    m_Window->m_width = width;
+    m_Window->m_height = height;
 }
 }
