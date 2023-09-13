@@ -3,7 +3,17 @@
 #include"NkCommon.hpp"
 namespace nk{
 class VulkanContext{
-public:
+private:
+	const std::vector<const char*> validationLayers = {
+		"VK_LAYER_KHRONOS_validation"
+	};
+
+	#ifdef NDEBUG
+	const bool enableValidationLayers = false;
+	#else
+	const bool enableValidationLayers = true;
+	#endif
+private:
 
     // --- omitted ---
     VkInstance _instance; // Vulkan library handle
@@ -23,7 +33,14 @@ private:
     void cleanup();
 
     void createInstance();
-    
+	void setupDebugMessenger();
+	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
+	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
+	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+    std::vector<const char*> getRequiredExtensions();
+	bool checkValidationLayerSupport();
+	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
+	
 };
 }
 #endif
