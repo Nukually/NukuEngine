@@ -1,5 +1,8 @@
 #include"NkVulkan.hpp"
 namespace nk{
+VulkanContext::VulkanContext(Window& window):window{window}{
+    init();
+}
 void VulkanContext::init()
 {
     init_vulkan();
@@ -10,6 +13,7 @@ void VulkanContext::init_vulkan()
     //init vulkan
     createInstance();
     setupDebugMessenger();
+    createSurface();
     pickPhysicalDevice();
     createLogicalDevice();
 }
@@ -20,6 +24,7 @@ void VulkanContext::init_swapchain()
 void VulkanContext::cleanup()
 {
     //clean up
+    vkDestroySurfaceKHR(_instance, _surface, nullptr);
     vkDestroyDevice(_device, nullptr);
     if (enableValidationLayers) {
         DestroyDebugUtilsMessengerEXT(_instance, _debug_messenger, nullptr);
@@ -28,6 +33,7 @@ void VulkanContext::cleanup()
 }
 void VulkanContext::createInstance()
 {
+    //create instance
     if (enableValidationLayers && !checkValidationLayerSupport()) {
         throw std::runtime_error("validation layers requested, but not available!");
     }
@@ -103,6 +109,9 @@ void VulkanContext::createLogicalDevice() {
     }
 
     vkGetDeviceQueue(_device, indices.graphicsFamily.value(), 0, &_graphicsQueue);
+}
+void VulkanContext::createSurface() {
+    window.createWindowSurface(_instance,&_surface);
 }
 
 VkResult VulkanContext::CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {

@@ -1,12 +1,15 @@
 #ifndef NkVulkan_h
 #define NkVulkan_h
 #include"NkCommon.hpp"
+#include"NkWindow.hpp"
 namespace nk{
 struct QueueFamilyIndices {
-	std::optional<uint32_t> graphicsFamily;
-	bool isComplete() {
-		return graphicsFamily.has_value();
-	}
+    std::optional<uint32_t> graphicsFamily;
+    std::optional<uint32_t> presentFamily;
+
+    bool isComplete() {
+        return graphicsFamily.has_value() && presentFamily.has_value();
+    }
 };
 class VulkanContext{
 private:
@@ -20,13 +23,14 @@ private:
 	const bool enableValidationLayers = true;
 	#endif
 private:
-
     // --- omitted ---
+	Window &window;
     VkInstance _instance; // Vulkan library handle
 	VkDebugUtilsMessengerEXT _debug_messenger; // Vulkan debug output handle
 	VkPhysicalDevice _chosenGPU; // GPU chosen as the default device
 	VkDevice _device; // Vulkan device for commands
 	VkQueue _graphicsQueue;
+	VkQueue _presentQueue;
 	VkSurfaceKHR _surface; // Vulkan window surface
     VkSwapchainKHR _swapchain; // from other articles
 	VkFormat _swapchainImageFormat;// image format expected by the windowing system
@@ -36,14 +40,16 @@ private:
 public:
 	void init();
 	void cleanup();
+	VulkanContext(Window &window);
+
 private:
 	void init_vulkan(); 
     void init_swapchain(); 
-
     void createInstance();
 	void setupDebugMessenger();
 	void pickPhysicalDevice();
 	void createLogicalDevice();
+	void createSurface();
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 	bool isDeviceSuitable(VkPhysicalDevice device);
 	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
