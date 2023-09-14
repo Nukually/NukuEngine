@@ -12,3 +12,5 @@
 #include<mutex>
 #include <stdlib.h>
 #include<vector>
+#include <cstring>
+#include <optional>

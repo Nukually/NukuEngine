@@ -2,6 +2,12 @@
 #define NkVulkan_h
 #include"NkCommon.hpp"
 namespace nk{
+struct QueueFamilyIndices {
+	std::optional<uint32_t> graphicsFamily;
+	bool isComplete() {
+		return graphicsFamily.has_value();
+	}
+};
 class VulkanContext{
 private:
 	const std::vector<const char*> validationLayers = {
@@ -20,6 +26,7 @@ private:
 	VkDebugUtilsMessengerEXT _debug_messenger; // Vulkan debug output handle
 	VkPhysicalDevice _chosenGPU; // GPU chosen as the default device
 	VkDevice _device; // Vulkan device for commands
+	VkQueue _graphicsQueue;
 	VkSurfaceKHR _surface; // Vulkan window surface
     VkSwapchainKHR _swapchain; // from other articles
 	VkFormat _swapchainImageFormat;// image format expected by the windowing system
@@ -35,6 +42,10 @@ private:
 
     void createInstance();
 	void setupDebugMessenger();
+	void pickPhysicalDevice();
+	void createLogicalDevice();
+	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	bool isDeviceSuitable(VkPhysicalDevice device);
 	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
 	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
