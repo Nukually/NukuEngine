@@ -16,7 +16,7 @@ bool Engine::StartUp(int width,int height)
 {
     std::cout<<"hello world"<<std::endl;
     m_Window = new Window(width,height,"hello world");
-    m_Vulkan = new VulkanContext();
+    m_Vulkan = new VulkanContext(*m_Window);
     return true;
 }
 void Engine::OnRenderFrame()

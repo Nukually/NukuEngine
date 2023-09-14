@@ -16,11 +16,6 @@ struct SwapChainSupportDetails {
     std::vector<VkSurfaceFormatKHR> formats;
     std::vector<VkPresentModeKHR> presentModes;
 };
-struct SwapChainSupportDetails {
-    VkSurfaceCapabilitiesKHR capabilities;
-    std::vector<VkSurfaceFormatKHR> formats;
-    std::vector<VkPresentModeKHR> presentModes;
-};
 class VulkanContext{
 private:
 	const std::vector<const char*> validationLayers = {
@@ -47,7 +42,7 @@ private:
 	VkSurfaceKHR _surface; // Vulkan window surface
     VkSwapchainKHR _swapchain; // from other articles
 	VkFormat _swapchainImageFormat;// image format expected by the windowing system
-	VkExtent2D _swapChainExtent;
+	VkExtent2D _swapchainExtent;
 	std::vector<VkImage> _swapchainImages;//array of images from the swapchain
 	std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
 
