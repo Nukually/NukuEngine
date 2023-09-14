@@ -11,10 +11,23 @@ struct QueueFamilyIndices {
         return graphicsFamily.has_value() && presentFamily.has_value();
     }
 };
+struct SwapChainSupportDetails {
+    VkSurfaceCapabilitiesKHR capabilities;
+    std::vector<VkSurfaceFormatKHR> formats;
+    std::vector<VkPresentModeKHR> presentModes;
+};
+struct SwapChainSupportDetails {
+    VkSurfaceCapabilitiesKHR capabilities;
+    std::vector<VkSurfaceFormatKHR> formats;
+    std::vector<VkPresentModeKHR> presentModes;
+};
 class VulkanContext{
 private:
 	const std::vector<const char*> validationLayers = {
 		"VK_LAYER_KHRONOS_validation"
+	};
+	const std::vector<const char*> deviceExtensions = {
+		VK_KHR_SWAPCHAIN_EXTENSION_NAME
 	};
 
 	#ifdef NDEBUG
@@ -34,6 +47,7 @@ private:
 	VkSurfaceKHR _surface; // Vulkan window surface
     VkSwapchainKHR _swapchain; // from other articles
 	VkFormat _swapchainImageFormat;// image format expected by the windowing system
+	VkExtent2D _swapChainExtent;
 	std::vector<VkImage> _swapchainImages;//array of images from the swapchain
 	std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
 
@@ -46,22 +60,28 @@ private:
 	void init_vulkan(); 
     void init_swapchain(); 
     void createInstance();
-	void setupDebugMessenger();
-	void pickPhysicalDevice();
 	void createLogicalDevice();
 	void createSurface();
-	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
-	bool isDeviceSuitable(VkPhysicalDevice device);
 	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
 	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
+	void setupDebugMessenger();
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-    std::vector<const char*> getRequiredExtensions();
+	std::vector<const char*> getRequiredExtensions();
 	bool checkValidationLayerSupport();
+	void pickPhysicalDevice();
+	bool isDeviceSuitable(VkPhysicalDevice device);
+	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	void createSwapChain();
+	VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 	static VKAPI_ATTR VkBool32 VKAPI_CALL VulkanContext::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
 		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 		return VK_FALSE;
 	}
-	
+	void createImageViews();
 };
 }
 #endif
