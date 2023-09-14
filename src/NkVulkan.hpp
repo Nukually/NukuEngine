@@ -82,6 +82,8 @@ private:
 		return VK_FALSE;
 	}
 	void createImageViews();
+	void init_pipeline();
+	void createGraphicsPipeline();
 };
 }
 #endif

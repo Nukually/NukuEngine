@@ -7,6 +7,7 @@ void VulkanContext::init()
 {
     init_vulkan();
     init_swapchain();
+    init_pipeline();
 }
 void VulkanContext::init_vulkan()
 {
@@ -384,5 +385,10 @@ void VulkanContext::createImageViews(){
         }
     }
 }
-
+void VulkanContext::init_pipeline(){
+    createGraphicsPipeline();
+}
+void VulkanContext::createGraphicsPipeline(){
+    
+}
 }
