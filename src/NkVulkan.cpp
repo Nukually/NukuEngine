@@ -385,8 +385,8 @@ void VulkanContext::init_pipeline(){
     createGraphicsPipeline();
 }
 void VulkanContext::createGraphicsPipeline(){
-    auto vertShaderCode = readFile("shaders/tri_shader_vert.spv");
-    auto fragShaderCode = readFile("shaders/tri_shader_frag.spv");
+    auto vertShaderCode = readFile("../shaders/tri_shader_vert.spv");
+    auto fragShaderCode = readFile("../shaders/tri_shader_frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
@@ -477,7 +477,7 @@ VkShaderModule VulkanContext::createShaderModule(const std::vector<char>& code){
     createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
     VkShaderModule shaderModule;
-    if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
+    if (vkCreateShaderModule(_device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
         throw std::runtime_error("failed to create shader module!");
     }
 
