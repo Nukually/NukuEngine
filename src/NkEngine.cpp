@@ -24,7 +24,9 @@ void Engine::OnRenderFrame()
     while (!glfwWindowShouldClose(m_Window->getGLFWwindow()))
     {
         glfwPollEvents();
+        drawFrame();
     }
+    m_Vulkan->waitIdle();
 }
 void Engine::ClearUp()
 {
@@ -32,5 +34,8 @@ void Engine::ClearUp()
     delete m_Vulkan;
     delete m_Window;
     return;
+}
+void Engine::drawFrame(){
+    m_Vulkan->drawFrame();
 }
 }

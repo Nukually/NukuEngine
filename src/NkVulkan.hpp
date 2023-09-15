@@ -46,10 +46,20 @@ private:
 	std::vector<VkImage> _swapchainImages;//array of images from the swapchain
 	std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
 	VkPipelineLayout _pipelineLayout;
+	VkRenderPass _renderPass;
+	VkPipeline _graphicsPipeline;
+	std::vector<VkFramebuffer> _swapChainFramebuffers;
+	VkCommandPool _commandPool;
+	VkCommandBuffer _commandBuffer;
+	VkSemaphore _imageAvailableSemaphore;
+	VkSemaphore _renderFinishedSemaphore;
+	VkFence _inFlightFence;
 
 public:
 	void init();
 	void cleanup();
+	void drawFrame();
+	void waitIdle();
 	VulkanContext(Window &window);
 
 private:
@@ -98,6 +108,14 @@ private:
 	void init_pipeline();
 	void createGraphicsPipeline();
 	VkShaderModule createShaderModule(const std::vector<char>& code);
+	void createRenderPass();
+	void init_drawing();
+	void createFrameBuffers();
+	void createCommandPool();
+	void createCommandbuffer();
+	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+	void createSyncObjects();
+	
 };
 }
 #endif
