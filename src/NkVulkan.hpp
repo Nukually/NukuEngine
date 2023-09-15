@@ -45,6 +45,7 @@ private:
 	VkExtent2D _swapchainExtent;
 	std::vector<VkImage> _swapchainImages;//array of images from the swapchain
 	std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
+	VkPipelineLayout _pipelineLayout;
 
 public:
 	void init();
@@ -76,9 +77,27 @@ private:
 		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 		return VK_FALSE;
 	}
+	static std::vector<char> readFile(const std::string& filename) {
+        std::ifstream file(filename, std::ios::ate | std::ios::binary);
+
+        if (!file.is_open()) {
+            throw std::runtime_error("failed to open file!");
+        }
+
+        size_t fileSize = (size_t) file.tellg();
+        std::vector<char> buffer(fileSize);
+
+        file.seekg(0);
+        file.read(buffer.data(), fileSize);
+
+        file.close();
+
+        return buffer;
+    }
 	void createImageViews();
 	void init_pipeline();
 	void createGraphicsPipeline();
+	VkShaderModule createShaderModule(const std::vector<char>& code);
 };
 }
 #endif
