@@ -60,7 +60,22 @@ public:
 	void cleanup();
 	void drawFrame();
 	void waitIdle();
+	VkCommandPool getCommandPool() { return _commandPool; }
+	VkDevice device() { return _device; }
+	SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(_chosenGPU); }
+  	uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+	VkSurfaceKHR surface() { return _surface; }
+	VkQueue graphicsQueue() { return _graphicsQueue; }
+	VkQueue presentQueue() { return _presentQueue; }
 	VulkanContext(Window &window);
+	QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(_chosenGPU); }
+	VkFormat findSupportedFormat(
+      const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+	void createImageWithInfo(
+      const VkImageCreateInfo &imageInfo,
+      VkMemoryPropertyFlags properties,
+      VkImage &image,
+      VkDeviceMemory &imageMemory);
 
 private:
 	void init_vulkan(); 

@@ -21,3 +21,4 @@
 #include<algorithm>
 #include<fstream>
 #include <cassert>
+#include<array>
