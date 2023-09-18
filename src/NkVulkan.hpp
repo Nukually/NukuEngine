@@ -109,7 +109,7 @@ private:
 	void createGraphicsPipeline();
 	VkShaderModule createShaderModule(const std::vector<char>& code);
 	void createRenderPass();
-	void init_drawing();
+	void init_renderer();
 	void createFrameBuffers();
 	void createCommandPool();
 	void createCommandbuffer();

@@ -8,7 +8,7 @@ void VulkanContext::init()
     init_vulkan();
     init_swapchain();
     init_pipeline();
-    init_drawing();
+    init_renderer();
 }
 void VulkanContext::init_vulkan()
 {
@@ -18,19 +18,27 @@ void VulkanContext::init_vulkan()
     createSurface();
     pickPhysicalDevice();
     createLogicalDevice();
+    createCommandPool();
 }
 void VulkanContext::init_swapchain()
 {
     createSwapChain();
     createImageViews();
+    createRenderPass();
+    // createDepthResources();
+    createFrameBuffers();
+    createSyncObjects();
+
     //init swapchain
 }
-void VulkanContext::init_drawing()
+void VulkanContext::init_renderer()
 {
-    createFrameBuffers();
-    createCommandPool();
+    // recreateSwapChain();
     createCommandbuffer();
-    createSyncObjects();
+}
+void VulkanContext::init_pipeline()
+{
+    createGraphicsPipeline();
 }
 void VulkanContext::cleanup()
 {
@@ -398,10 +406,7 @@ void VulkanContext::createImageViews(){
         }
     }
 }
-void VulkanContext::init_pipeline(){
-    createRenderPass();
-    createGraphicsPipeline();
-}
+
 void VulkanContext::createGraphicsPipeline(){
     auto vertShaderCode = readFile("../shaders/tri_shader_vert.spv");
     auto fragShaderCode = readFile("../shaders/tri_shader_frag.spv");
