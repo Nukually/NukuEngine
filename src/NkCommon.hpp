@@ -24,3 +24,4 @@
 #include<fstream>
 #include <cassert>
 #include<array>
+#include<memory>
