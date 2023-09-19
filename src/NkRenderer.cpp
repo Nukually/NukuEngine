@@ -3,7 +3,7 @@
 
 namespace nk {
 
-NkRenderer::NkRenderer(NkWindow& window, VulkanContext& device)
+NkRenderer::NkRenderer(Window& window, VulkanContext& device)
     : _window{window}, _device{device} {
   recreateSwapChain();
   createCommandBuffers();
@@ -55,7 +55,7 @@ void NkRenderer::freeCommandBuffers() {
   commandBuffers.clear();
 }
 
-VkCommandBuffer NkSwapChain::beginFrame() {
+VkCommandBuffer NkRenderer::beginFrame() {
   assert(!isFrameStarted && "Can't call beginFrame while already in progress");
 
   auto result = _swapChain->acquireNextImage(&currentImageIndex);
