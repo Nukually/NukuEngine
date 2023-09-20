@@ -173,6 +173,7 @@ void NkSwapChain::createSwapChain() {
   // allowed to create a swap chain with more. That's why we'll first query the final number of
   // images with vkGetSwapchainImagesKHR, then resize the container and finally call it again to
   // retrieve the handles.
+  // 
   vkGetSwapchainImagesKHR(device.device(), swapChain, &imageCount, nullptr);
   swapChainImages.resize(imageCount);
   vkGetSwapchainImagesKHR(device.device(), swapChain, &imageCount, swapChainImages.data());

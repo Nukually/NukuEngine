@@ -10,7 +10,8 @@ static std::mutex g_render_mutex;
  */
 bool NkEngineInit(int width,int height)
 {
-    return nk::Engine::Instance().StartUp(width, height);
+    //return nk::Engine::Instance().StartUp(width, height);
+    return true;
 }
 /**
  * @brief Render 每帧调用
@@ -21,13 +22,13 @@ bool NkEngineInit(int width,int height)
 void NkEngineRender()
 {
     std::lock_guard<std::mutex> lock(g_render_mutex);
-    nk::Engine::Instance().OnRenderFrame();
+    //nk::Engine::Instance().OnRenderFrame();
 }
 /**
  * @brief 引擎结束需要调用，回收资源
  */
 void NkEngineClearUp()
 {
-    nk::Engine::Instance().ClearUp();
+    //nk::Engine::Instance().ClearUp();
 }
 #endif
