@@ -14,8 +14,8 @@ void Window::initWindow() {
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
   window = glfwCreateWindow(m_width, m_height, windowName.c_str(), nullptr, nullptr);
-  //glfwSetWindowUserPointer(window, this);
-  //glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+  glfwSetWindowUserPointer(window, this);
+  glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 }
 void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
   if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {

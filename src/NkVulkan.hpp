@@ -85,10 +85,11 @@ public:
 	void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 	VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+	VkPhysicalDeviceProperties properties;
 
 private:
 	void init_vulkan(); 
-    void init_swapchain(); 
+    //void init_swapchain(); 
     void createInstance();
 	void createLogicalDevice();
 	void createSurface();
@@ -101,7 +102,7 @@ private:
 	void pickPhysicalDevice();
 	bool isDeviceSuitable(VkPhysicalDevice device);
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
-	void createSwapChain();
+	//void createSwapChain();
 	VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
@@ -129,11 +130,11 @@ private:
         return buffer;
     }
 	void createImageViews();
-	void init_pipeline();
-	void createGraphicsPipeline();
-	VkShaderModule createShaderModule(const std::vector<char>& code);
-	void createRenderPass();
-	void init_renderer();
+	//void init_pipeline();
+	//void createGraphicsPipeline();
+	//VkShaderModule createShaderModule(const std::vector<char>& code);
+	//void createRenderPass();
+	//void init_renderer();
 	void createFrameBuffers();
 	void createCommandPool();
 	void createCommandbuffer();
