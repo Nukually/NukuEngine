@@ -39,32 +39,14 @@ Engine::Engine() {
         .build();
     loadGameObjects();
 }
-bool Engine::StartUp(int width,int height)
-{
-    std::cout<<"hello world"<<std::endl;
-    //m_Window = new Window(width,height,"hello world");
-    //m_Vulkan = new VulkanContext(*m_Window);
-    //m_renderer = new NkRenderer(*m_Window, *m_Vulkan);
-    return true;
-}
-void Engine::OnRenderFrame()
-{
-    while (!glfwWindowShouldClose(window.getGLFWwindow()))
-    {
-        glfwPollEvents();
-        drawFrame();
-    }
-    vulkanContext.waitIdle();
-}
+
 void Engine::ClearUp()
 {
-    //todo:如何正确且自动地控制析构顺序？
+    vulkanContext.cleanup();
+    //TODO:如何正确且自动地控制析构顺序？
     //delete m_Vulkan;
     //delete m_Window;
     return;
-}
-void Engine::drawFrame(){
-    //m_Vulkan->drawFrame();
 }
 void Engine::run() {
     std::vector<std::unique_ptr<NkBuffer>> uboBuffers(NkSwapChain::MAX_FRAMES_IN_FLIGHT);
@@ -153,28 +135,25 @@ void Engine::run() {
 
     vkDeviceWaitIdle(vulkanContext.device());
 }
-void Engine::loadGameObjects() {
+void Engine::loadModel(glm::vec3 translation, glm::vec3 scale, const std::string& filepath) {
     std::shared_ptr<NkModel> model =
-        NkModel::createModelFromFile(vulkanContext, "models/flat_vase.obj");
-    auto flatVase = NkGameObject::createGameObject();
-    flatVase.model = model;
-    flatVase.transform.translation = { -.5f, .5f, 0.f };
-    flatVase.transform.scale = { 3.f, 1.5f, 3.f };
-    gameObjects.emplace(flatVase.getId(), std::move(flatVase));
+        NkModel::createModelFromFile(vulkanContext, filepath);
+    auto go = NkGameObject::createGameObject();
+    go.model = model;
+    go.transform.translation = translation;
+    go.transform.scale = scale;
+    gameObjects.emplace(go.getId(), std::move(go));
+}
+void Engine::creatPointLight(float intensity, float radius, glm::vec3 color, glm::vec3 translation) {
+    auto pointLight = NkGameObject::makePointLight(intensity, radius, color);
+    pointLight.transform.translation = translation;
+    gameObjects.emplace(pointLight.getId(), std::move(pointLight));
+}
+void Engine::loadGameObjects() {
 
-    model = NkModel::createModelFromFile(vulkanContext, "models/smooth_vase.obj");
-    auto smoothVase = NkGameObject::createGameObject();
-    smoothVase.model = model;
-    smoothVase.transform.translation = { .5f, .5f, 0.f };
-    smoothVase.transform.scale = { 3.f, 1.5f, 3.f };
-    gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
-
-    model = NkModel::createModelFromFile(vulkanContext, "models/quad.obj");
-    auto floor = NkGameObject::createGameObject();
-    floor.model = model;
-    floor.transform.translation = { 0.f, .5f, 0.f };
-    floor.transform.scale = { 3.f, 1.f, 3.f };
-    gameObjects.emplace(floor.getId(), std::move(floor));
+    loadModel({ -.5f, .5f, 0.f }, { 3.f, 1.5f, 3.f }, "models/flat_vase.obj");
+    loadModel({ .5f, .5f, 0.f }, { 3.f, 1.5f, 3.f }, "models/smooth_vase.obj");
+    loadModel({ 0.f, .5f, 0.f }, { 3.f, 1.f, 3.f }, "models/quad.obj");
 
     std::vector<glm::vec3> lightColors{
         {1.f, .1f, .1f},
@@ -184,16 +163,13 @@ void Engine::loadGameObjects() {
         { .1f, 1.f, 1.f },
         { 1.f, 1.f, 1.f }  //
     };
-
     for (int i = 0; i < lightColors.size(); i++) {
-        auto pointLight = NkGameObject::makePointLight(0.2f);
-        pointLight.color = lightColors[i];
         auto rotateLight = glm::rotate(
             glm::mat4(1.f),
             (i * glm::two_pi<float>()) / lightColors.size(),
             { 0.f, -1.f, 0.f });
-        pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
-        gameObjects.emplace(pointLight.getId(), std::move(pointLight));
+        creatPointLight(0.2f, 0.1f, lightColors[i], glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f)));
     }
+
 }
 }

@@ -11,16 +11,13 @@ public:
     Engine();
     //~Engine();
     //static Engine &Instance();
-    bool StartUp(int width, int height);
-    void OnRenderFrame();
     void ClearUp();
-    void drawFrame();
-    void loadGameObject();
-    void removeGameObject();
     void createMaterial();
     void deleteMaterial();
     void materialBindShader();
     void run();
+    void loadModel(glm::vec3 translation, glm::vec3 scale, const std::string& filepath);
+    void creatPointLight(float intensity, float radius, glm::vec3 color, glm::vec3 translation);
     void loadGameObjects();
     static constexpr int WIDTH = 800;
     static constexpr int HEIGHT = 600;
@@ -31,7 +28,5 @@ private:
     NkRenderer renderer{ window,vulkanContext };
     std::unique_ptr<NkDescriptorPool>globalPool{};
     NkGameObject::Map gameObjects;
-    //NkDevice nkDevice{ nkWindow };
-    //NkRenderer nkRenderer{ nkWindow, nkDevice };
 };
 }
