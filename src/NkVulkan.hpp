@@ -6,6 +6,7 @@ namespace nk{
 struct QueueFamilyIndices {
     std::optional<uint32_t> graphicsFamily;
     std::optional<uint32_t> presentFamily;
+
     bool isComplete() {
         return graphicsFamily.has_value() && presentFamily.has_value();
     }
@@ -129,12 +130,17 @@ private:
         return buffer;
     }
 	void createImageViews();
+	//void init_pipeline();
+	//void createGraphicsPipeline();
+	//VkShaderModule createShaderModule(const std::vector<char>& code);
+	//void createRenderPass();
+	//void init_renderer();
 	void createFrameBuffers();
 	void createCommandPool();
 	void createCommandbuffer();
 	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 	void createSyncObjects();
-
+	
 };
 }
 #endif
