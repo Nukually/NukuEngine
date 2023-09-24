@@ -65,6 +65,7 @@ public:
     ~NkDescriptorPool();
     NkDescriptorPool(const NkDescriptorPool &) = delete;
     NkDescriptorPool &operator=(const NkDescriptorPool &) = delete;
+    VkDescriptorPool& getVkDescriptorPool() { return descriptorPool; }
 
     bool allocateDescriptor(
         const VkDescriptorSetLayout descriptorSetLayout, VkDescriptorSet &descriptor) const;

@@ -56,13 +56,18 @@ endif()
 
 include_directories(external)
 
+
 # If TINYOBJ_PATH not specified in .env.cmake, try fetching from git repo
 if (NOT TINYOBJ_PATH)
   message(STATUS "TINYOBJ_PATH not specified in .env.cmake, using external/tinyobjloader")
   set(TINYOBJ_PATH external/tinyobjloader)
 endif()
 
-file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE SOURCES 
+  ${PROJECT_SOURCE_DIR}/src/imgui/*.cpp
+  ${PROJECT_SOURCE_DIR}/src/imgui/*.h
+  ${PROJECT_SOURCE_DIR}/src/*.cpp
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
@@ -105,6 +110,7 @@ elseif (UNIX)
     target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 endif()
 
+include_directories(src/imgui)
 
 ############## Build SHADERS #######################
 

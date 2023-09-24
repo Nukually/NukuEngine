@@ -12,11 +12,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-// std
-#include <array>
-#include <cassert>
-#include <chrono>
-#include <stdexcept>
+
 
 namespace nk{
 //std::mutex s_EngineInstanceMutex;
@@ -31,13 +27,16 @@ namespace nk{
 //    }
 //    return *s_pEngine;
 //}
+
 Engine::Engine() {
+//先构造这个类里的成员再调用构造函数！！！
     globalPool =
         NkDescriptorPool::Builder(vulkanContext)
         .setMaxSets(NkSwapChain::MAX_FRAMES_IN_FLIGHT)
         .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, NkSwapChain::MAX_FRAMES_IN_FLIGHT)
         .build();
     loadGameObjects();
+
 }
 
 void Engine::ClearUp()
@@ -171,5 +170,37 @@ void Engine::loadGameObjects() {
         creatPointLight(0.2f, 0.1f, lightColors[i], glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f)));
     }
 
+}
+ImGui_ImplVulkanH_Window Engine::g_MainWindowData;
+void Engine::setupImgui()
+{
+    ImGui_ImplVulkanH_Window* wd = &g_MainWindowData;//如何构造
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForVulkan(window.getGLFWwindow(), true);
+    ImGui_ImplVulkan_InitInfo init_info = {};
+    init_info.Instance = vulkanContext.getInstance();
+    init_info.PhysicalDevice = vulkanContext.getPhysicalDevice();
+    init_info.Device = vulkanContext.getDevice();
+    init_info.QueueFamily = vulkanContext.findQueueFamilies(vulkanContext.getPhysicalDevice()).presentFamily.value();
+    init_info.Queue = vulkanContext.getVkQueue();
+    init_info.PipelineCache = VK_NULL_HANDLE;
+    init_info.DescriptorPool = globalPool->getVkDescriptorPool();
+    init_info.Subpass = 0;
+    init_info.MinImageCount = 2;
+    init_info.ImageCount = wd->ImageCount;
+    init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+    init_info.Allocator = nullptr;
+    init_info.CheckVkResultFn = check_vk_result;
+    ImGui_ImplVulkan_Init(&init_info, wd->RenderPass);
+    
 }
 }

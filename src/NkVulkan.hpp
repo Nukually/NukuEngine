@@ -44,9 +44,9 @@ private:
 	VkExtent2D _swapchainExtent;
 	std::vector<VkImage> _swapchainImages;//array of images from the swapchain
 	std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
-	VkPipelineLayout _pipelineLayout;
-	VkRenderPass _renderPass;
-	VkPipeline _graphicsPipeline;
+	//VkPipelineLayout _pipelineLayout;
+	//VkRenderPass _renderPass;
+	//VkPipeline _graphicsPipeline;
 	std::vector<VkFramebuffer> _swapChainFramebuffers;
 	VkCommandPool _commandPool;
 	VkCommandBuffer _commandBuffer;
@@ -57,7 +57,11 @@ private:
 public:
 	void init();
 	void cleanup();
-	void drawFrame();
+	//void drawFrame();
+	VkInstance& getInstance() { return _instance; }
+	VkDevice& getDevice() { return _device; }
+	VkPhysicalDevice& getPhysicalDevice() { return _chosenGPU; }
+	VkQueue& getVkQueue() { return _graphicsQueue; }
 	void waitIdle();
 	VkCommandPool getCommandPool() { return _commandPool; }
 	VkDevice device() { return _device; }
@@ -85,6 +89,7 @@ public:
 	VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
 	VkPhysicalDeviceProperties properties;
+	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
 private:
 	void init_vulkan(); 
@@ -100,7 +105,7 @@ private:
 	bool checkValidationLayerSupport();
 	void pickPhysicalDevice();
 	bool isDeviceSuitable(VkPhysicalDevice device);
-	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	
 	//void createSwapChain();
 	VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
@@ -129,10 +134,10 @@ private:
         return buffer;
     }
 	void createImageViews();
-	void createFrameBuffers();
+	//void createFrameBuffers();
 	void createCommandPool();
 	void createCommandbuffer();
-	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+	//void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 	void createSyncObjects();
 
 };
