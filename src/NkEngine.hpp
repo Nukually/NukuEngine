@@ -33,7 +33,7 @@ public:
     void loadModel(glm::vec3 translation, glm::vec3 scale, const std::string& filepath);
     void creatPointLight(float intensity, float radius, glm::vec3 color, glm::vec3 translation);
     void loadGameObjects();
-    void setupImgui();
+    //void setupImgui();
     static ImGui_ImplVulkanH_Window g_MainWindowData;//如果这个声明在类内，就要在类外进行初始化
 
 private:

@@ -16,7 +16,7 @@ class NkRenderer {
   VkRenderPass getSwapChainRenderPass() const { return _swapChain->getRenderPass(); }
   float getAspectRatio() const { return _swapChain->extentAspectRatio(); }
   bool isFrameInProgress() const { return isFrameStarted; }
-
+ 
   VkCommandBuffer getCurrentCommandBuffer() const {
     assert(isFrameStarted && "Cannot get command buffer when frame not in progress");
     return commandBuffers[currentFrameIndex];
@@ -26,7 +26,6 @@ class NkRenderer {
     assert(isFrameStarted && "Cannot get frame index when frame not in progress");
     return currentFrameIndex;
   }
-
   VkCommandBuffer beginFrame();
   void endFrame();
   void beginSwapChainRenderPass(VkCommandBuffer commandBuffer);

@@ -17,106 +17,106 @@ struct SwapChainSupportDetails {
 };
 class VulkanContext{
 private:
-	const std::vector<const char*> validationLayers = {
-		"VK_LAYER_KHRONOS_validation"
-	};
-	const std::vector<const char*> deviceExtensions = {
-		VK_KHR_SWAPCHAIN_EXTENSION_NAME
-	};
+    const std::vector<const char*> validationLayers = {
+        "VK_LAYER_KHRONOS_validation"
+    };
+    const std::vector<const char*> deviceExtensions = {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+    };
 
-	#ifdef NDEBUG
-	const bool enableValidationLayers = false;
-	#else
-	const bool enableValidationLayers = true;
-	#endif
+    #ifdef NDEBUG
+    const bool enableValidationLayers = false;
+    #else
+    const bool enableValidationLayers = true;
+    #endif
 private:
     // --- omitted ---
-	Window &window;
+    Window &window;
     VkInstance _instance; // Vulkan library handle
-	VkDebugUtilsMessengerEXT _debug_messenger; // Vulkan debug output handle
-	VkPhysicalDevice _chosenGPU; // GPU chosen as the default device
-	VkDevice _device; // Vulkan device for commands
-	VkQueue _graphicsQueue;
-	VkQueue _presentQueue;
-	VkSurfaceKHR _surface; // Vulkan window surface
+    VkDebugUtilsMessengerEXT _debug_messenger; // Vulkan debug output handle
+    VkPhysicalDevice _chosenGPU; // GPU chosen as the default device
+    VkDevice _device; // Vulkan device for commands
+    VkQueue _graphicsQueue;
+    VkQueue _presentQueue;
+    VkSurfaceKHR _surface; // Vulkan window surface
     VkSwapchainKHR _swapchain; // from other articles
-	VkFormat _swapchainImageFormat;// image format expected by the windowing system
-	VkExtent2D _swapchainExtent;
-	std::vector<VkImage> _swapchainImages;//array of images from the swapchain
-	std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
-	//VkPipelineLayout _pipelineLayout;
-	//VkRenderPass _renderPass;
-	//VkPipeline _graphicsPipeline;
-	std::vector<VkFramebuffer> _swapChainFramebuffers;
-	VkCommandPool _commandPool;
-	VkCommandBuffer _commandBuffer;
-	VkSemaphore _imageAvailableSemaphore;
-	VkSemaphore _renderFinishedSemaphore;
-	VkFence _inFlightFence;
+    VkFormat _swapchainImageFormat;// image format expected by the windowing system
+    VkExtent2D _swapchainExtent;
+    std::vector<VkImage> _swapchainImages;//array of images from the swapchain
+    std::vector<VkImageView> _swapchainImageViews;//array of image-views from the swapchain
+    //VkPipelineLayout _pipelineLayout;
+    //VkRenderPass _renderPass;
+    //VkPipeline _graphicsPipeline;
+    std::vector<VkFramebuffer> _swapChainFramebuffers;
+    VkCommandPool _commandPool;
+    VkCommandBuffer _commandBuffer;
+    VkSemaphore _imageAvailableSemaphore;
+    VkSemaphore _renderFinishedSemaphore;
+    VkFence _inFlightFence;
 
 public:
-	void init();
-	void cleanup();
-	//void drawFrame();
-	VkInstance& getInstance() { return _instance; }
-	VkDevice& getDevice() { return _device; }
-	VkPhysicalDevice& getPhysicalDevice() { return _chosenGPU; }
-	VkQueue& getVkQueue() { return _graphicsQueue; }
-	void waitIdle();
-	VkCommandPool getCommandPool() { return _commandPool; }
-	VkDevice device() { return _device; }
-	SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(_chosenGPU); }
-  	uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
-	VkSurfaceKHR surface() { return _surface; }
-	VkQueue graphicsQueue() { return _graphicsQueue; }
-	VkQueue presentQueue() { return _presentQueue; }
-	VulkanContext(Window &window);
-	QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(_chosenGPU); }
-	VkFormat findSupportedFormat(
+    void init();
+    void cleanup();
+    //void drawFrame();
+    VkInstance& getInstance() { return _instance; }
+    VkDevice& getDevice() { return _device; }
+    VkPhysicalDevice& getPhysicalDevice() { return _chosenGPU; }
+    VkQueue& getVkQueue() { return _graphicsQueue; }
+    void waitIdle();
+    VkCommandPool getCommandPool() { return _commandPool; }
+    VkDevice device() { return _device; }
+    SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(_chosenGPU); }
+      uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+    VkSurfaceKHR surface() { return _surface; }
+    VkQueue graphicsQueue() { return _graphicsQueue; }
+    VkQueue presentQueue() { return _presentQueue; }
+    VulkanContext(Window &window);
+    QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(_chosenGPU); }
+    VkFormat findSupportedFormat(
       const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
-	void createImageWithInfo(
+    void createImageWithInfo(
       const VkImageCreateInfo &imageInfo,
       VkMemoryPropertyFlags properties,
       VkImage &image,
       VkDeviceMemory &imageMemory);
-	void createBuffer(
+    void createBuffer(
       VkDeviceSize size,
       VkBufferUsageFlags usage,
       VkMemoryPropertyFlags properties,
       VkBuffer &buffer,
       VkDeviceMemory &bufferMemory);
-	void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
-	VkCommandBuffer beginSingleTimeCommands();
+    void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+    VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
-	VkPhysicalDeviceProperties properties;
-	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+    VkPhysicalDeviceProperties properties;
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
 private:
-	void init_vulkan(); 
+    void init_vulkan(); 
     //void init_swapchain(); 
     void createInstance();
-	void createLogicalDevice();
-	void createSurface();
-	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
-	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
-	void setupDebugMessenger();
-	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-	std::vector<const char*> getRequiredExtensions();
-	bool checkValidationLayerSupport();
-	void pickPhysicalDevice();
-	bool isDeviceSuitable(VkPhysicalDevice device);
-	
-	//void createSwapChain();
-	VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
-	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
-	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
-	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
-	static VKAPI_ATTR VkBool32 VKAPI_CALL VulkanContext::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
-		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-		return VK_FALSE;
-	}
-	static std::vector<char> readFile(const std::string& filename) {
+    void createLogicalDevice();
+    void createSurface();
+    VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
+    void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
+    void setupDebugMessenger();
+    void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+    std::vector<const char*> getRequiredExtensions();
+    bool checkValidationLayerSupport();
+    void pickPhysicalDevice();
+    bool isDeviceSuitable(VkPhysicalDevice device);
+    
+    //void createSwapChain();
+    VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+    VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+    VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+    bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+    static VKAPI_ATTR VkBool32 VKAPI_CALL VulkanContext::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
+        std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+        return VK_FALSE;
+    }
+    static std::vector<char> readFile(const std::string& filename) {
         std::ifstream file(filename, std::ios::ate | std::ios::binary);
 
         if (!file.is_open()) {
@@ -133,12 +133,12 @@ private:
 
         return buffer;
     }
-	void createImageViews();
-	//void createFrameBuffers();
-	void createCommandPool();
-	void createCommandbuffer();
-	//void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
-	void createSyncObjects();
+    void createImageViews();
+    //void createFrameBuffers();
+    void createCommandPool();
+    void createCommandbuffer();
+    //void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+    void createSyncObjects();
 
 };
 }

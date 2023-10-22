@@ -36,7 +36,7 @@ Engine::Engine() {
         .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, NkSwapChain::MAX_FRAMES_IN_FLIGHT)
         .build();
     loadGameObjects();
-
+    //setupImgui();
 }
 
 void Engine::ClearUp()
@@ -89,6 +89,12 @@ void Engine::run() {
     auto currentTime = std::chrono::high_resolution_clock::now();
     while (!window.shouldClose()) {
         glfwPollEvents();
+
+        /*ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::ShowDemoWindow((bool*)true);
+        ImGui::Render();*/
 
         auto newTime = std::chrono::high_resolution_clock::now();
         float frameTime =
@@ -151,7 +157,7 @@ void Engine::creatPointLight(float intensity, float radius, glm::vec3 color, glm
 void Engine::loadGameObjects() {
 
     loadModel({ -.5f, .5f, 0.f }, { 3.f, 1.5f, 3.f }, "models/flat_vase.obj");
-    loadModel({ .5f, .5f, 0.f }, { 3.f, 1.5f, 3.f }, "models/smooth_vase.obj");
+    loadModel({ .5f, .5f, 0.f }, { 3.f, 1.5f, 5.f }, "models/smooth_vase.obj");
     loadModel({ 0.f, .5f, 0.f }, { 3.f, 1.f, 3.f }, "models/quad.obj");
 
     std::vector<glm::vec3> lightColors{
@@ -172,35 +178,66 @@ void Engine::loadGameObjects() {
 
 }
 ImGui_ImplVulkanH_Window Engine::g_MainWindowData;
-void Engine::setupImgui()
-{
-    ImGui_ImplVulkanH_Window* wd = &g_MainWindowData;//如何构造
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplGlfw_InitForVulkan(window.getGLFWwindow(), true);
-    ImGui_ImplVulkan_InitInfo init_info = {};
-    init_info.Instance = vulkanContext.getInstance();
-    init_info.PhysicalDevice = vulkanContext.getPhysicalDevice();
-    init_info.Device = vulkanContext.getDevice();
-    init_info.QueueFamily = vulkanContext.findQueueFamilies(vulkanContext.getPhysicalDevice()).presentFamily.value();
-    init_info.Queue = vulkanContext.getVkQueue();
-    init_info.PipelineCache = VK_NULL_HANDLE;
-    init_info.DescriptorPool = globalPool->getVkDescriptorPool();
-    init_info.Subpass = 0;
-    init_info.MinImageCount = 2;
-    init_info.ImageCount = wd->ImageCount;
-    init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
-    init_info.Allocator = nullptr;
-    init_info.CheckVkResultFn = check_vk_result;
-    ImGui_ImplVulkan_Init(&init_info, wd->RenderPass);
-    
-}
+//void Engine::setupImgui()
+//{
+//    ImGui_ImplVulkanH_Window* wd = &g_MainWindowData;
+//    
+//    IMGUI_CHECKVERSION();
+//    ImGui::CreateContext();
+//    ImGuiIO& io = ImGui::GetIO(); (void)io;
+//    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+//    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls        // IF using Docking Branch
+//
+//    // Setup Dear ImGui style
+//    ImGui::StyleColorsDark();
+//
+//    ImGui_ImplGlfw_InitForVulkan(window.getGLFWwindow(), true);
+//    ImGui_ImplVulkan_InitInfo init_info = {};
+//    init_info.Instance = vulkanContext.getInstance();
+//    init_info.PhysicalDevice = vulkanContext.getPhysicalDevice();
+//    init_info.Device = vulkanContext.getDevice();
+//    init_info.QueueFamily = vulkanContext.findQueueFamilies(vulkanContext.getPhysicalDevice()).presentFamily.value();
+//    init_info.Queue = vulkanContext.getVkQueue();
+//    init_info.PipelineCache = VK_NULL_HANDLE;
+//    init_info.DescriptorPool = globalPool->getVkDescriptorPool();
+//    init_info.Subpass = 0;
+//    init_info.MinImageCount = 2;
+//    init_info.ImageCount = 20;//wd->ImageCount
+//    init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+//    init_info.Allocator = nullptr;
+//    init_info.CheckVkResultFn = check_vk_result;
+//    //auto _renderpass = renderer.
+//    ImGui_ImplVulkan_Init(&init_info, renderer.getSwapChainRenderPass());
+//
+//    // Upload Fonts
+//    {
+//        // Use any command queue
+//        VkCommandPool command_pool = vulkanContext.getCommandPool();
+//        VkCommandBuffer command_buffer = renderer.beginFrame();
+//
+//        auto err = vkResetCommandPool(vulkanContext.getDevice(), command_pool, 0);
+//        check_vk_result(err);
+//        VkCommandBufferBeginInfo begin_info = {};
+//        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+//        begin_info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+//        err = vkBeginCommandBuffer(command_buffer, &begin_info);
+//        check_vk_result(err);
+//
+//        ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
+//
+//        VkSubmitInfo end_info = {};
+//        end_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+//        end_info.commandBufferCount = 1;
+//        end_info.pCommandBuffers = &command_buffer;
+//        err = vkEndCommandBuffer(command_buffer);
+//        check_vk_result(err);
+//        err = vkQueueSubmit(vulkanContext.getVkQueue(), 1, &end_info, VK_NULL_HANDLE);
+//        check_vk_result(err);
+//
+//        err = vkDeviceWaitIdle(vulkanContext.getDevice());
+//        check_vk_result(err);
+//        ImGui_ImplVulkan_DestroyFontUploadObjects();
+//    }
+//    
+//}
 }
